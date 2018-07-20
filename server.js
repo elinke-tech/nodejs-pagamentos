@@ -48,8 +48,70 @@ app.post('/api/criar-plano', function(req, res) {
     });
 });
 
+app.get('/api/listar-planos', function(req, res) {
+    instance.get('/plans').then(response => {
+        console.log(response);
+    }).catch(error => {
+        console.log(error);
+    });
+})
+
+app.get('/api/consultar-plano/:code', function(req, res) {
+    var planCode = req.params.code;
+    instance.get('/plans/' + planCode).then(response => {
+        console.log(response);
+    }).catch(error => {
+        console.log(error);
+    });
+})
+
+app.put('/api/ativar-plano/:code', function(req, res) {
+    var planCode = req.params.code;
+    instance.put('/plans/' + planCode + '/activate').then(response => {
+        console.log(response);
+    }).catch(error => {
+        console.log(error);
+    });
+})
+
+app.put('/api/desativar-plano/:code', function(req, res) {
+    var planCode = req.params.code;
+    instance.put('/plans/' + planCode + '/inactivate').then(response => {
+        console.log(response);
+    }).catch(error => {
+        console.log(error);
+    });
+})
+
+app.put('/api/alterar-plano/:code', function(req, res) {
+    var planCode = req.params.code;
+    // DADOS para alterar o plano
+    // data = {
+    //     "name": "Plano Especial",
+    //     "description": "Nova descrição",
+    //     "amount": 1290,
+    //     "setup_fee": 800,
+    //     "max_qty": 1,
+    //     "payment_method": "CREDIT_CARD",
+    //     "interval": {
+    //       "length": 1,
+    //       "unit": "MONTH"
+    //     },
+    //     "billing_cycles": 12,
+    //     "trial": {
+    //       "days": 30,
+    //       "enabled": true,
+    //       "hold_setup_fee": true
+    //     }
+    // }
+    instance.put('/plans/' + planCode, data).then(response => {
+        console.log(response);
+    }).catch(error => {
+        console.log(error);
+    });
+})
 
 
-app.
+
 app.listen(8080);
 console.log('Listening on port 8080');
