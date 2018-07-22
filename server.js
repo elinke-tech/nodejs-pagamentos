@@ -111,6 +111,44 @@ app.put('/api/alterar-plano/:code', function(req, res) {
     });
 })
 
+app.post('/api/criar-assinante/:newVault', function(req, res) {
+    var newVault = req.params.newVault;
+    // data = {
+    //     "code": "cliente01",
+    //     "email": "nome@exemplo.com.br",
+    //     "fullname": "Nome Sobrenome",
+    //     "cpf": "22222222222",
+    //     "phone_area_code": "11",
+    //     "phone_number": "934343434",
+    //     "birthdate_day": "26",
+    //     "birthdate_month": "04",
+    //     "birthdate_year": "1980",
+    //     "address": {
+    //       "street": "Rua Nome da Rua",
+    //       "number": "100",
+    //       "complement": "Casa",
+    //       "district": "Nome do Bairro",
+    //       "city": "São Paulo",
+    //       "state": "SP",
+    //       "country": "BRA",
+    //       "zipcode": "05015010"
+    //     },
+    //     "billing_info": {
+    //       "credit_card": {
+    //         "holder_name": "Nome Completo",
+    //         "number": "4111111111111111",
+    //         "expiration_month": "06",
+    //         "expiration_year": "22"
+    //       }
+    //     }
+    //   }
+    instance.post('/customers?new_vault=', data).then(response => {
+        console.log(response);
+    }).catch(error => {
+        console.log(error);
+    });
+})
+
 
 
 app.listen(8080);
