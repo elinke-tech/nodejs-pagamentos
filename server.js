@@ -6,8 +6,8 @@ const axios = require('axios');
 var bodyParser = require('body-parser');
 const moip = require('moip-sdk-node').default({
     //accessToken: 'your-access-token',
-    token: 'E7HIBSETPFP3AND4P6DEOCJURR0VLTZF',
-    key: 'REETZSZW5N7PLDUZ8VKNAH5L9JZR1QBGPMVSIWME',
+    token: 'G9UMOE6EAONC67MB2TPZ5NKH15AABIIK',
+    key: '8T1ATA5SJXN5Q2STBSNNEHO85IPOR7DJOX4S0737',
     production: false
   })
 var app = express();
@@ -30,6 +30,7 @@ app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public'))); //  "public" off of current is root
 
 app.post('/api/v1.5/plano/criar', function(req, res) {
+    console.log('REQUEST BODY: ', req.body);
     moip.plan.create({
         code: req.body.code,
         name: req.body.name,
@@ -49,10 +50,10 @@ app.post('/api/v1.5/plano/criar', function(req, res) {
         },
         payment_method: req.body.payment_method
       }).then((response) => {
-          res.send(response);
+          res.json(response);
           console.log('Console log response', response); 
       }).catch((response) => {
-          res.send(response);
+          res.json(response);
           console.log('Console log response at catch', response);
     })
 })
