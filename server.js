@@ -4,6 +4,7 @@ var Base64 = require('js-base64').Base64;
 var request = require('request');
 const axios = require('axios');
 var bodyParser = require('body-parser');
+var cors = require('cors');
 const moip = require('moip-sdk-node').default({
     //accessToken: 'your-access-token',
     token: 'G9UMOE6EAONC67MB2TPZ5NKH15AABIIK',
@@ -13,6 +14,7 @@ const moip = require('moip-sdk-node').default({
 var app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(cors());
 
 //var sandboxUrl = 'https://sandbox.moip.com.br/assinaturas/v1'
 //var moipApiUrl = sandboxUrl;
