@@ -87,8 +87,8 @@ app.put('/api/v1.5/plano/ativar/:code', function(req, res) {
         method: 'PUT',
         url: 'https://sandbox.moip.com.br/assinaturas/v1/plans/' + planCode + '/activate',
         headers: 
-        { 'content-type': 'Content-Type',
-        authorization: 'Authorization' } 
+        { 'content-type': 'application/json',
+        authorization: 'Bearer RzlVTU9FNkVBT05DNjdNQjJUUFo1TktIMTVBQUJJSUs6IDhUMUFUQTVTSlhONVEyU1RCU05ORUhPODVJUE9SN0RKT1g0UzA3Mzc=' } 
     };
   
     request(options, function (error, response, body) {
@@ -105,8 +105,8 @@ app.put('/api/v1.5/plano/desativar/:code', function(req, res) {
         method: 'PUT',
         url: 'https://sandbox.moip.com.br/assinaturas/v1/plans/' + planCode + '/inactivate',
         headers: 
-        { 'content-type': 'Content-Type',
-        authorization: 'Authorization' } 
+        { 'content-type': 'application/json',
+        authorization: 'Bearer RzlVTU9FNkVBT05DNjdNQjJUUFo1TktIMTVBQUJJSUs6IDhUMUFUQTVTSlhONVEyU1RCU05ORUhPODVJUE9SN0RKT1g0UzA3Mzc=' } 
     };
   
     request(options, function (error, response, body) {
@@ -258,23 +258,25 @@ app.put('/api/v1.5/assinante/atualizar-cartao/:code', function(req, res) {
 })
 
 app.post('/api/v1.5/assinatura/criar/:new_customer', function(req, res) {
-    
-    moip.subscription.create(req.body.assinaturaId,{ //REQUIRED Seu ID próprio da assinatura. Não deve ser duplicado. 
-        new_customer: false,
-        amount: 9990,
-        payment_method: "CREDIT_CARD",
+    //REQUIRED Seu ID próprio da assinatura. Não deve ser duplicado. 
+    console.log('REQUEST PARAMS: ' + req.params.new_customer);
+    console.log('REQUEST BODY: ' + req.body.payment_method);
+    moip.subscription.create(req.body.code,{
+        new_customer: req.params.new_customer,
+        amount: req.body.amount,
+        payment_method: req.body.payment_method,
         plan : {
-            code : 'plan01'
+            code : req.body.plan.code
         },
         customer : {
-            code : 'cliente01'
+            code : req.body.customer.code
       }  
     }).then((response) => {
         console.log(response.body);
-        res.send(response);
+        res.json(response);
     }).catch((response) => {
         console.log(response.body);
-        res.send(response); 
+        res.json(response); 
     })
 })
 
