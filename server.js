@@ -50,9 +50,10 @@ app.post('/api/v1.5/plano/criar', function(req, res) {
           enabled: req.body.trial.enabled,
           hold_setup_fee: req.body.trial.hold_setup_fee
         },
+        status: req.body.status,
         payment_method: req.body.payment_method
       }).then((response) => {
-          res.json(response);
+          res.send(response);
           console.log('Console log response', response); 
       }).catch((response) => {
           res.json(response);
@@ -64,7 +65,7 @@ app.get('/api/v1.5/plano/listar-todos', function(req, res) {
     moip.plan.getAll()
     .then((response) => {
         console.log(response.body);
-        res.send(response);
+        res.json(response);
     }).catch((response) => {
         console.log(response.body);
         res.send(response); 
@@ -219,7 +220,7 @@ app.get('/api/v1.5/assinante/consultar/:code', function(req, res) {
     })
 })
 
-app.put('/api/v1.5/assinante/alterar', function(req, res) {
+app.put('/api/v1.5/assinante/alterar/:code', function(req, res) {
     // TODO
     //==============================================
     // data = {
@@ -361,7 +362,7 @@ app.put('/api/v1.5/assinatura/alterar/:code', function(req, res) {
     //   }
 })
 
-app.put('/api/v1.5/assinatura/alterar-pagamento', function(req, res) {
+app.put('/api/v1.5/assinatura/alterar-pagamento/:code', function(req, res) {
     // TODO
     //====================================
     // data = {
