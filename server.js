@@ -159,7 +159,8 @@ app.put('/api/v1.5/plano/alterar/:code', function(req, res) {
 })
 
 app.post('/api/v1.5/assinante/criar/:newVault', function(req, res) {
-    var newVault = req.params.newVault;
+    console.log('isNew? ' + req.params.newVault);
+    console.log('Billing Info: ' + req.body.billing_info.credit_card.holder_name);
     moip.subscriber.create({
         code: req.body.code,
         email: req.body.email,
@@ -189,11 +190,11 @@ app.post('/api/v1.5/assinante/criar/:newVault', function(req, res) {
           }
         }
       }).then((response) => {
-          console.log(response.body);
-          res.send(response);
+          console.log(response);
+          res.json(response);
       }).catch((response) => {
           console.log(response.body);
-          res.send(response); 
+          res.json(response); 
     })
 })
 
@@ -262,23 +263,24 @@ app.put('/api/v1.5/assinante/atualizar-cartao/:code', function(req, res) {
 
 app.post('/api/v1.5/assinatura/criar/:new_customer', function(req, res) {
     //REQUIRED Seu ID próprio da assinatura. Não deve ser duplicado. 
-    console.log('REQUEST PARAMS: ' + req.params.new_customer);
-    console.log('REQUEST BODY: ' + req.body.payment_method);
-    moip.subscription.create(req.body.code,{
-        new_customer: req.params.new_customer,
-        amount: req.body.amount,
+    // console.log('REQUEST PARAMS: ' + req.params.new_customer);
+    // console.log('REQUEST BODY: ' + req.body.payment_method);
+    console.log(req.body.code);
+    console.log(req.body.plan.code);
+    console.log(req.body.customer.code);
+
+    moip.subscription.create({
+        code: req.body.code,
         payment_method: req.body.payment_method,
         plan : {
             code : req.body.plan.code
         },
-        customer : {
-            code : req.body.customer.code
-      }  
+        customer: req.body.customer
     }).then((response) => {
         console.log(response.body);
         res.json(response);
     }).catch((response) => {
-        console.log(response.body);
+        console.log(response);
         res.json(response); 
     })
 })
