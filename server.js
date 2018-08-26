@@ -1,8 +1,6 @@
 var express = require('express');
 var path = require('path');
-var Base64 = require('js-base64').Base64;
 var request = require('request');
-const axios = require('axios');
 var bodyParser = require('body-parser');
 var cors = require('cors');
 const moip = require('moip-sdk-node').default({
@@ -11,27 +9,20 @@ const moip = require('moip-sdk-node').default({
     key: '8T1ATA5SJXN5Q2STBSNNEHO85IPOR7DJOX4S0737',
     production: false
   })
+var moipServerUrl = 'https://sandbox.moip.com.br/assinaturas/v1';
+//var moipBeareToken = 'Basic RzlVTU9FNkVBT05DNjdNQjJUUFo1TktIMTVBQUJJSUs6IDhUMUFUQTVTSlhONVEyU1RCU05ORUhPODVJUE9SN0RKT1g0UzA3Mzc=' // Este token nao funciona 
+var moipBeareToken = 'Basic MDEwMTAxMDEwMTAxMDEwMTAxMDEwMTAxMDEwMTAxMDE6QUJBQkFCQUJBQkFCQUJBQkFCQUJBQkFCQUJBQkFCQUJBQkFCQUJBQg=='; // este token é o de exemplo 
+console.log(moipBeareToken);
+
+
 var app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());
 
-//var sandboxUrl = 'https://sandbox.moip.com.br/assinaturas/v1'
-//var moipApiUrl = sandboxUrl;
-//var moipBeareToken = Base64.encode('MOIP_API_TOKEN:MOIP_API_KEY');
-
-// const instance = axios.create({
-//     baseURL: moipApiUrl,
-//     timeout: 1000,
-//     headers: {'Content-Type': 'application/json'},
-//     auth: {
-//         'bearer': moipBeareToken
-//     }
-// });
-//app.use(express.static(__dirname)); // Current directory is root
 app.use(express.static(path.join(__dirname, 'public'))); //  "public" off of current is root
 
-app.post('/api/v1.5/plano/criar', function(req, res) {
+app.post('/api/v2/plano/criar', function(req, res) {
     console.log('REQUEST BODY: ', req.body);
     moip.plan.create({
         code: req.body.code,
@@ -61,7 +52,7 @@ app.post('/api/v1.5/plano/criar', function(req, res) {
     })
 })
 
-app.get('/api/v1.5/plano/listar-todos', function(req, res) {
+app.get('/api/v2/plano/listar-todos', function(req, res) {
     moip.plan.getAll()
     .then((response) => {
         console.log(response.body);
@@ -72,7 +63,7 @@ app.get('/api/v1.5/plano/listar-todos', function(req, res) {
     })
 })
 
-app.get('/api/v1.5/planos/consultar/:code', function(req, res) {
+app.get('/api/v2/planos/consultar/:code', function(req, res) {
     var planCode = req.params.code;
     moip.plan.getOne(planCode)
     .then((response) => {
@@ -91,7 +82,7 @@ app.put('/api/v1.5/plano/ativar/:code', function(req, res) {
         url: 'https://sandbox.moip.com.br/assinaturas/v1/plans/' + planCode + '/activate',
         headers: 
         { 'content-type': 'application/json',
-        authorization: 'Bearer RzlVTU9FNkVBT05DNjdNQjJUUFo1TktIMTVBQUJJSUs6IDhUMUFUQTVTSlhONVEyU1RCU05ORUhPODVJUE9SN0RKT1g0UzA3Mzc=' } 
+        authorization: moipBeareToken } 
     };
   
     request(options, function (error, response, body) {
@@ -107,9 +98,10 @@ app.put('/api/v1.5/plano/desativar/:code', function(req, res) {
     var options = {
         method: 'PUT',
         url: 'https://sandbox.moip.com.br/assinaturas/v1/plans/' + planCode + '/inactivate',
-        headers: 
-        { 'content-type': 'application/json',
-        authorization: 'Bearer RzlVTU9FNkVBT05DNjdNQjJUUFo1TktIMTVBQUJJSUs6IDhUMUFUQTVTSlhONVEyU1RCU05ORUhPODVJUE9SN0RKT1g0UzA3Mzc=' } 
+        headers: { 
+            'content-type': 'application/json', 
+            'authorization': moipBeareToken 
+        } 
     };
   
     request(options, function (error, response, body) {
@@ -159,6 +151,21 @@ app.put('/api/v1.5/plano/alterar/:code', function(req, res) {
 })
 
 app.post('/api/v1.5/assinante/criar/:newVault', function(req, res) {
+    request.post({
+        headers: { 'Authorization' : moipBeareToken },
+        url: moipServerUrl + '/customers?new_vault=' + req.params.newVault,
+        json: req.body
+    }, (error, response, body) => {
+        if (error) {
+            res.send(error)
+            throw new Error(error);
+        }
+        console.log(response);
+        res.send(response);
+    })
+})
+
+app.post('/api/v2/assinante/criar/:newVault', function(req, res) {
     console.log('isNew? ' + req.params.newVault);
     console.log('Billing Info: ' + req.body.billing_info.credit_card.holder_name);
     moip.subscriber.create({
@@ -198,7 +205,36 @@ app.post('/api/v1.5/assinante/criar/:newVault', function(req, res) {
     })
 })
 
-app.get('/api/assinante/listar-todos', function(req, res) {
+app.post('/api/v2/assinante/adicionar-cartao', function(req, res){
+    moip.customer.createCreditCard(customerId, {
+        method: "CREDIT_CARD",
+        creditCard: {
+            expirationMonth: "05",
+            expirationYear: "22",
+            number: "5555666677778884",
+            cvc: "123",
+            holder: {
+                fullname: "Jose Portador da Silva",
+                birthdate: "1988-12-30",
+                taxDocument: {
+                    type: "CPF",
+                    number: "33333333333"
+                },
+                phone: {
+                    countryCode: "55",
+                    areaCode: "11",
+                    number: "66778899"
+                }
+            }
+        }
+    }).then((response) => {
+        console.log(response.body)
+    }).catch((err) => {
+        console.log(err)
+    })
+})
+
+app.get('/api/v2/assinante/listar-todos', function(req, res) {
     moip.subscriber.getAll()
     .then((response) => {
         console.log(response.body);
@@ -209,7 +245,7 @@ app.get('/api/assinante/listar-todos', function(req, res) {
     })
 })
 
-app.get('/api/v1.5/assinante/consultar/:code', function(req, res) {
+app.get('/api/v2/assinante/consultar/:code', function(req, res) {
     var assinanteCode = req.params.code;
     moip.subscriber.getOne(assinanteCode)
     .then((response) => {
@@ -261,7 +297,7 @@ app.put('/api/v1.5/assinante/atualizar-cartao/:code', function(req, res) {
     res.send('YET TO BE IMPLEMENTED');
 })
 
-app.post('/api/v1.5/assinatura/criar/:new_customer', function(req, res) {
+app.post('/api/v2/assinatura/criar/:new_customer', function(req, res) {
     //REQUIRED Seu ID próprio da assinatura. Não deve ser duplicado. 
     // console.log('REQUEST PARAMS: ' + req.params.new_customer);
     // console.log('REQUEST BODY: ' + req.body.payment_method);
@@ -285,7 +321,7 @@ app.post('/api/v1.5/assinatura/criar/:new_customer', function(req, res) {
     })
 })
 
-app.get('/api/v1.5/assinatura/listar', function(req, res) {
+app.get('/api/v2/assinatura/listar', function(req, res) {
     moip.subscription.getAll()
     .then((response) => {
         console.log(response.body) 
@@ -294,7 +330,7 @@ app.get('/api/v1.5/assinatura/listar', function(req, res) {
     })
 })
 
-app.get('/api/v1.5/assinatura/consultar-detalhes/:code', function(req, res) {
+app.get('/api/v2/assinatura/consultar-detalhes/:code', function(req, res) {
     moip.subscription.getOne(req.params.code)
     .then((response) => {
         console.log(response.body) 
