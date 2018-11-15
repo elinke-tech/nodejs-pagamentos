@@ -10,8 +10,8 @@ const moip = require('moip-sdk-node').default({
     production: false
   })
 var moipServerUrl = 'https://sandbox.moip.com.br/assinaturas/v1';
-//var moipBeareToken = 'Basic RzlVTU9FNkVBT05DNjdNQjJUUFo1TktIMTVBQUJJSUs6IDhUMUFUQTVTSlhONVEyU1RCU05ORUhPODVJUE9SN0RKT1g0UzA3Mzc=' // Este token nao funciona 
-var moipBeareToken = 'Basic MDEwMTAxMDEwMTAxMDEwMTAxMDEwMTAxMDEwMTAxMDE6QUJBQkFCQUJBQkFCQUJBQkFCQUJBQkFCQUJBQkFCQUJBQkFCQUJBQg=='; // este token é o de exemplo 
+var moipBeareToken = 'Basic RzlVTU9FNkVBT05DNjdNQjJUUFo1TktIMTVBQUJJSUs6IDhUMUFUQTVTSlhONVEyU1RCU05ORUhPODVJUE9SN0RKT1g0UzA3Mzc=' // Este token nao funciona 
+//var moipBeareToken = 'Basic MDEwMTAxMDEwMTAxMDEwMTAxMDEwMTAxMDEwMTAxMDE6QUJBQkFCQUJBQkFCQUJBQkFCQUJBQkFCQUJBQkFCQUJBQkFCQUJBQg=='; // este token é o de exemplo 
 console.log(moipBeareToken);
 
 
