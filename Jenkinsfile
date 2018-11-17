@@ -23,10 +23,10 @@ podTemplate(label: 'nodejs-pagamentos', containers: [
   ) {
     node('nodejs-pagamentos') {
         stage('Check running containers') {
-            container('docker') {
-                // withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: a766dad6-a5e6-44f2-9a24-a283c3c428ed, usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
-                //     sh "docker login -u ${env.USERNAME} -p ${env.PASSWORD} ${docker_registry_url};"
-                // }
+            withDockerRegistry(credentialsId: 'a766dad6-a5e6-44f2-9a24-a283c3c428ed', url: 'registry.gitlab.com') {
+                container('docker') {
+                    sh "docker login -u ${env.USERNAME} -p ${env.PASSWORD} ${docker_registry_url};"
+                }
             }
         }
         
