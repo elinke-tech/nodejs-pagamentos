@@ -23,10 +23,8 @@ podTemplate(label: 'nodejs-pagamentos', containers: [
   ) {
     node('nodejs-pagamentos') {
         stage('Check running containers') {
-            withDockerRegistry(credentialsId: 'a766dad6-a5e6-44f2-9a24-a283c3c428ed', url: 'registry.gitlab.com') {
-                container('docker') {
-                    sh "docker pull ubuntu"
-                }
+            container('docker') {
+                sh "docker pull ubuntu"
             }
         }
         
