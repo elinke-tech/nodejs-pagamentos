@@ -1,6 +1,5 @@
 podTemplate(label: 'nodejs-pagamentos', containers: [
     containerTemplate(
-        withDockerRegistry(credentialsId: 'a766dad6-a5e6-44f2-9a24-a283c3c428ed', url: 'registry.gitlab.com'),
         name: 'nodejs', 
         image: 'registry.gitlab.com/nixlabs/opensource/builders/nodejs-nix', 
         ttyEnabled: true, 
