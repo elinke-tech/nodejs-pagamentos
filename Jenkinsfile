@@ -25,7 +25,7 @@ podTemplate(label: 'nodejs-pagamentos', containers: [
         stage('Check running containers') {
             withDockerRegistry(credentialsId: 'a766dad6-a5e6-44f2-9a24-a283c3c428ed', url: 'registry.gitlab.com') {
                 container('docker') {
-                    sh "docker login -u ${env.USERNAME} -p ${env.PASSWORD} ${docker_registry_url};"
+                    sh "docker pull ubuntu"
                 }
             }
         }
