@@ -1,4 +1,3 @@
-{
 podTemplate(label: 'nodejs-pagamentos', containers: [
     containerTemplate(
         withDockerRegistry(credentialsId: 'a766dad6-a5e6-44f2-9a24-a283c3c428ed', url: 'registry.gitlab.com'),
@@ -21,7 +20,7 @@ podTemplate(label: 'nodejs-pagamentos', containers: [
     hostPathVolume(mountPath: '/var/run/docker.sock', hostPath: '/var/run/docker.sock'),
     hostPathVolume(mountPath: '/root/.kube/config', hostPath: '/home/felipe/kubectl-slaves-config/config') 
   ]
-) 
+) {
     node('nodejs-pagamentos') {
         stage('Check running containers') {
             withDockerRegistry(credentialsId: 'a766dad6-a5e6-44f2-9a24-a283c3c428ed', url: 'registry.gitlab.com') {
