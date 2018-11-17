@@ -1,16 +1,22 @@
 podTemplate(label: 'nodejs-pagamentos', containers: [
     containerTemplate(
-        name: 'nodejs', 
+        name: 'nodejs',
+        imagePullSecrets: [[$class: 'PodImagePullSecret', name: 'jenkins-gitlab-credentials']],
+        alwaysPullImage: true, 
         image: 'registry.gitlab.com/nixlabs/opensource/builders/nodejs-nix', 
         ttyEnabled: true, 
         command: 'cat'),
     containerTemplate(
-        name: 'kubectl', 
+        name: 'kubectl',
+        imagePullSecrets: [[$class: 'PodImagePullSecret', name: 'jenkins-gitlab-credentials']],
+        alwaysPullImage: true, 
         image: 'registry.gitlab.com/nixlabs/opensource/builders/kubectl-nix', 
         command: 'cat', 
         ttyEnabled: true),
     containerTemplate(
-        name: 'docker', 
+        name: 'docker',
+        imagePullSecrets: [[$class: 'PodImagePullSecret', name: 'jenkins-gitlab-credentials']],
+        alwaysPullImage: true, 
         image: 'registry.gitlab.com/nixlabs/opensource/builders/docker-nix', 
         command: 'cat', 
         ttyEnabled: true)
