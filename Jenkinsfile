@@ -6,7 +6,7 @@ podTemplate(
         containerTemplate(
             name: 'jnlp',
             alwaysPullImage: true, 
-            image: 'registry.nix.labs/nixlabs/opensource/builders/jnlp-nix', 
+            image: 'jenkins/jnlp-slave:3.10-1', 
             ttyEnabled: true, 
             command: 'cat'),
         containerTemplate(
