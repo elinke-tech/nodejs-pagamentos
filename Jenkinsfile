@@ -34,6 +34,9 @@ podTemplate(
   ]
 ) {
     node('nodejs-pagamentos') {
+        stage('Checkout scm') {
+            checkout scm
+        }
         stage('Check running containers') {
                 container('docker') {
                     sh "docker pull"
