@@ -3,12 +3,12 @@ podTemplate(
     imagePullSecrets: ['jenkins-registry-credentials'],
     alwaysPullImage: true,
     containers: [
-        containerTemplate(
-            name: 'jnlp',
-            alwaysPullImage: true, 
-            image: 'jenkins/jnlp-slave:3.10-1', 
-            ttyEnabled: true, 
-            command: 'cat'),
+        // containerTemplate(
+        //     name: 'jnlp',
+        //     alwaysPullImage: true, 
+        //     image: 'jenkins/jnlp-slave:3.10-1', 
+        //     ttyEnabled: true, 
+        //     command: 'cat'),
         containerTemplate(
             name: 'nodejs',
             alwaysPullImage: true, 
