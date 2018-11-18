@@ -36,23 +36,24 @@ podTemplate(
     node('nodejs-pagamentos') {
         stage('Checkout scm') {
             checkout scm
+            sh "pwd && ls -la"
         }
-        stage('Check running containers') {
-                container('docker') {
-                    sh "docker pull"
-                }
-        }
+        // stage('Check running containers') {
+        //         container('docker') {
+        //             sh "docker pull"
+        //         }
+        // }
         
-        stage('Clone repository') {
-            container('kubectl') {
-                sh 'kubectl config view'
-            }
-        }
+        // stage('Clone repository') {
+        //     container('kubectl') {
+        //         sh 'kubectl config view'
+        //     }
+        // }
 
-        stage('Maven Build') {
-            container('nodejs') {
-                    sh 'node --version'
-            }
-        }
+        // stage('Maven Build') {
+        //     container('nodejs') {
+        //             sh 'node --version'
+        //     }
+        // }
     }
 }
