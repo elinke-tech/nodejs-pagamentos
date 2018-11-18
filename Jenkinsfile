@@ -1,7 +1,7 @@
 podTemplate(
     label: 'nodejs-pagamentos', 
     imagePullSecrets: ['jenkins-registry-credentials'],
-    alwaysPullImage: true
+    alwaysPullImage: true,
     containers: [
         containerTemplate(
             name: 'jnlp',
