@@ -1,5 +1,12 @@
 podTemplate(label: 'nodejs-pagamentos', containers: [
     containerTemplate(
+        name: 'jnlp',
+        imagePullSecrets: [[$class: 'PodImagePullSecret', name: 'jenkins-registry-credentials']],
+        alwaysPullImage: true, 
+        image: 'registry.nix.labs/nixlabs/opensource/builders/jnlp-nix', 
+        ttyEnabled: true, 
+        command: 'cat'),
+    containerTemplate(
         name: 'nodejs',
         imagePullSecrets: [[$class: 'PodImagePullSecret', name: 'jenkins-registry-credentials']],
         alwaysPullImage: true, 
