@@ -2,13 +2,17 @@ podTemplate(
     label: 'nodejs-pagamentos', 
     imagePullSecrets: ['jenkins-registry-credentials'],
     alwaysPullImage: true,
+    envVars: [
+        envVar(key: 'KUBECONFIG', value: '/home/jenkins/.kube/config')
+    ],
     containers: [
-        // containerTemplate(
-        //     name: 'jnlp',
-        //     alwaysPullImage: true, 
-        //     image: 'jenkins/jnlp-slave:3.10-1', 
-        //     ttyEnabled: true, 
-        //     command: 'cat'),
+        containerTemplate(
+            name: 'jnlp',
+            alwaysPullImage: true, 
+            image: 'jenkins/jnlp-slave:3.10-1', 
+            args: '${computer.jnlpmac} ${computer.name}'
+            ttyEnabled: true, 
+            command: 'cat'),
         containerTemplate(
             name: 'nodejs',
             alwaysPullImage: true, 
@@ -30,7 +34,7 @@ podTemplate(
   ],
   volumes: [
     hostPathVolume(mountPath: '/var/run/docker.sock', hostPath: '/var/run/docker.sock'),
-    hostPathVolume(mountPath: '/root/.kube/config', hostPath: '/home/felipe/kubectl-slaves-config/config') 
+    hostPathVolume(mountPath: '/home/jenkins/.kube/config', hostPath: '/home/felipe/kubectl-slaves-config/config')
   ]
 ) {
     node('nodejs-pagamentos') {
