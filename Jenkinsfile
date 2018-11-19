@@ -10,9 +10,7 @@ podTemplate(
             name: 'jnlp',
             alwaysPullImage: true, 
             image: 'jenkins/jnlp-slave:3.10-1', 
-            args: '${computer.jnlpmac} ${computer.name}',
-            ttyEnabled: true, 
-            command: 'cat'),
+            args: '${computer.jnlpmac} ${computer.name}'),
         containerTemplate(
             name: 'nodejs',
             alwaysPullImage: true, 
